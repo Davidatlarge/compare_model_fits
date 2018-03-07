@@ -30,9 +30,3 @@ compare_model_fits <- function(x, y, degrees, plot = TRUE){
   return(summary.df)
   
 }
-
-# example
-x <- seq(1,20,length.out = 20)
-y <- x^seq(1,2,length.out = 20)
-
-compare_model_fits(x, y, degrees = 3)
