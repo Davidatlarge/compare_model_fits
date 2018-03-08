@@ -38,8 +38,3 @@ compare_model_fits(x, y, degrees = 3)
     ## value                 1 0.7332036     0.7183815  1.457740e-06
     ## value1                2 0.9617806     0.9572842  8.900550e-13
     ## value2                3 0.9966997     0.9960809  4.691585e-20
-
-TODO
-----
-
-Legend for the plot

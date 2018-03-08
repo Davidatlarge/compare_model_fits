@@ -18,10 +18,14 @@ compare_model_fits <- function(x, y, degrees, plot = TRUE){
     summary.df <- rbind(summary.df, current.df)
     # plot the current model
     if(plot){
-      lines(sort(x), fitted(lm(y ~ poly(x, degree = degree)))[order(x)], col=degree, type='l', lty=degree)
+      lines(sort(x), fitted(lm(y ~ poly(x, degree = degree)))[order(x)], col=degree, type='l', lty="dashed")
     }
     # clean up
     rm(current, current.df, degree)
+  }
+  # add a legend to the plot
+  if(plot){
+    legend("topleft", title = "degree", legend=c(1:degrees), col=c(1:degrees), lty="dashed")
   }
   # print the best fit degree as text
   print(paste("A", summary.df$polynomal.degree[summary.df$r.squared.adj==max(summary.df$r.squared.adj, na.rm=TRUE)], 
@@ -30,3 +34,4 @@ compare_model_fits <- function(x, y, degrees, plot = TRUE){
   return(summary.df)
   
 }
+
