@@ -10,6 +10,7 @@ compare_model_fits <- function(x, y, degrees, plot = TRUE){
     current <- summary(lm(y ~ poly(x, degree = degree)))
     # extract model summary results
     current.df <- data.frame("polynomal.degree" = degree,
+                             "RSS" = sum(current$residuals^2),
                              "r.squared" = current$r.squared,
                              "r.squared.adj" = current$adj.r.squared,
                              "p.value.model" = pf(current$fstatistic[1], current$fstatistic[2], current$fstatistic[3], lower.tail = FALSE)

@@ -23,7 +23,7 @@ This function fits multiple polynomal regressions to x and y data. The user supp
 
 ## Result
 
-A data frame giving for each polynomal the R², the adjusted R² and the p-value of the regression
+A data frame giving for each polynomal the Residual Sum of Squares, R², the adjusted R² and the p-value of the regression
 A printed sentence showing which polynomal best fits the data.
 A plot showing the data and the different fits (if plot = TRUE).
 

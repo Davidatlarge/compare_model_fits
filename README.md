@@ -19,7 +19,7 @@ Arguments
 Result
 ------
 
-A data frame giving for each polynomal the R², the adjusted R² and the p-value of the regression A printed sentence showing which polynomal best fits the data. A plot showing the data and the different fits (if plot = TRUE).
+A data frame giving for each polynomal the Residual Sum of Squares, R², the adjusted R² and the p-value of the regression A printed sentence showing which polynomal best fits the data. A plot showing the data and the different fits (if plot = TRUE).
 
 Example
 -------
@@ -34,7 +34,7 @@ compare_model_fits(x, y, degrees = 3)
 
     ## [1] "A 3 degree polynomal regression best fits the data"
 
-    ##        polynomal.degree r.squared r.squared.adj p.value.model
-    ## value                 1 0.7332036     0.7183815  1.457740e-06
-    ## value1                2 0.9617806     0.9572842  8.900550e-13
-    ## value2                3 0.9966997     0.9960809  4.691585e-20
+    ##        polynomal.degree        RSS r.squared r.squared.adj p.value.model
+    ## value                 1 65694.8425 0.7332036     0.7183815  1.457740e-06
+    ## value1                2  9410.9962 0.9617806     0.9572842  8.900550e-13
+    ## value2                3   812.6481 0.9966997     0.9960809  4.691585e-20
