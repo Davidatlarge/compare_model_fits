@@ -1,38 +1,45 @@
 #### fit polynomal regressions of consecutive degrees to data
 
 compare_model_fits <- function(x, y, degrees, plot = TRUE){
-  # plot input data
-  if(plot){plot(x,y, pch = 16)}
+  # fit models to data
+  models <- lapply(1:3, function(deg) {lm(x ~ poly(y, degree = deg))}) # runs the models up to n degrees and stores them all in a list
   
-  for(degree in 1:degrees){
-    if(!exists("summary.df")){summary.df <- data.frame(NULL)}
-    # fit the current degree polynomal model
-    current <- summary(lm(y ~ poly(x, degree = degree)))
-    # extract model summary results
-    current.df <- data.frame("polynomal.degree" = degree,
-                             "RSS" = sum(current$residuals^2),
-                             "r.squared" = current$r.squared,
-                             "r.squared.adj" = current$adj.r.squared,
-                             "p.value.model" = pf(current$fstatistic[1], current$fstatistic[2], current$fstatistic[3], lower.tail = FALSE)
+  # run anova on models to see p-value for the reduction fo risidual sum of squares
+  # https://stackoverflow.com/questions/43436047/anova-on-a-sequence-of-models-stored-in-a-list
+  models_anova <- eval( # runs the anova by evalualting the parsed text as a function
+    parse(text = # parses the text into an expression
+            paste("anova(", # creates the text string containing anova() 
+                  paste("models[[",1:length(models),"]]", sep = "", collapse=", "), # cycles through all models in the list
+                  ")", sep = "")
     )
-    # amend previous results
-    summary.df <- rbind(summary.df, current.df)
-    # plot the current model
-    if(plot){
-      lines(sort(x), fitted(lm(y ~ poly(x, degree = degree)))[order(x)], col=degree, type='l', lty="dashed")
-    }
-    # clean up
-    rm(current, current.df, degree)
-  }
-  # add a legend to the plot
-  if(plot){
-    legend("topleft", title = "degree", legend=c(1:degrees), col=c(1:degrees), lty="dashed")
-  }
-  # print the best fit degree as text
-  print(paste("A", summary.df$polynomal.degree[summary.df$r.squared.adj==max(summary.df$r.squared.adj, na.rm=TRUE)], 
-              "degree polynomal regression best fits the data", sep = " "))  
-  # output the result
-  return(summary.df)
+  )
   
+  # create a df with results for output
+  results <- data.frame(
+    "degree" = 1:degrees,
+    "r.squared" = unlist( # turns the list result of lapply into a vector
+      lapply(models, function(element) summary(element)$r.squared)), # for each element of the list makes a summary and gets the r.squared from it
+    "adj.r.squared" = unlist(lapply(models, function(element) summary(element)$adj.r.squared)),
+    "f.statistic" = unlist(lapply(models, function(element) summary(element)$fstatistic[1])),
+    "regression.P" = pf( # calculated p-value
+      unlist(lapply(models, function(element) summary(element)$fstatistic[1])), # extacts f-statistic from summary
+      unlist(lapply(models, function(element) summary(element)$fstatistic[2])), # extracts df1 from summary
+      unlist(lapply(models, function(element) summary(element)$fstatistic[3])), # extracts df2 from summary
+      lower.tail = FALSE),
+    "RSS" = models_anova$RSS, # residual sum of squares
+    "anova.P" = models_anova$`Pr(>F)` # p-value of anova on one model vs the preceding model (e.g. cubic vs. quadratic)
+  )
+  
+  # plot data and fits
+  if(plot){
+    plot(x,y, pch = 16) # plot the data
+    lapply(1:3, function(deg) # plot the regression lines
+    {lines(sort(x), fitted(lm(y ~ poly(x, degree = deg)))[order(x)], col = deg, type = 'l', lty = "dashed")}
+    )
+    legend("topleft", title = "degree", legend = c(1:degrees), col = c(1:degrees), lty = "dashed") # add legend
+  }
+  
+  
+  # output the result
+  return(results)
 }
-
