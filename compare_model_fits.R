@@ -2,7 +2,7 @@
 
 compare_model_fits <- function(x, y, degrees, plot = TRUE){
   # fit models to data
-  models <- lapply(1:3, function(deg) {lm(x ~ poly(y, degree = deg))}) # runs the models up to n degrees and stores them all in a list
+  models <- lapply(1:degrees, function(deg) {lm(x ~ poly(y, degree = deg))}) # runs the models up to n degrees and stores them all in a list
   
   # run anova on models to see p-value for the reduction fo risidual sum of squares
   # https://stackoverflow.com/questions/43436047/anova-on-a-sequence-of-models-stored-in-a-list
@@ -33,7 +33,7 @@ compare_model_fits <- function(x, y, degrees, plot = TRUE){
   # plot data and fits
   if(plot){
     plot(x,y, pch = 16) # plot the data
-    lapply(1:3, function(deg) # plot the regression lines
+    lapply(1:degrees, function(deg) # plot the regression lines
     {lines(sort(x), fitted(lm(y ~ poly(x, degree = deg)))[order(x)], col = deg, type = 'l', lty = "dashed")}
     )
     legend("topleft", title = "degree", legend = c(1:degrees), col = c(1:degrees), lty = "dashed") # add legend
