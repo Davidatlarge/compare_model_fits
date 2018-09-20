@@ -1,7 +1,7 @@
 ---
 title: "Compare the fit of multiple polynomal regressions"
 author: "David Kaiser"
-date: "2018-03-07"
+date: "2018-09-20"
 output: github_document
 ---
 
@@ -12,7 +12,7 @@ source("compare_model_fits.R")
 
 ## Description
 
-This function fits multiple polynomal regressions to x and y data. The user supplies the highest degree of polynomal that should be included and all polynomals from one to that degree will be calculated. A summary table and a printed result will be output.
+This function fits multiple polynomal regressions to x and y data. The user supplies the highest degree of polynomal that should be included and all polynomals from one to that degree will be calculated. A summary table will be output. ANOVA is performed on consecutive polynomal regressions (e.g. cubic vs quadratic fit) to indicate which increase in polynomal degree still produces a significant reduction in residual sum of squares.
 
 ## Arguments
 
@@ -23,8 +23,7 @@ This function fits multiple polynomal regressions to x and y data. The user supp
 
 ## Result
 
-A data frame giving for each polynomal the Residual Sum of Squares, R², the adjusted R² and the p-value of the regression
-A printed sentence showing which polynomal best fits the data.
+A data frame giving for each polynomal  R², the adjusted R², f-statistic value and the p-value of the regression, as well as the Residual Sum of Squares and the ANOVA p-value.
 A plot showing the data and the different fits (if plot = TRUE).
 
 ## Example
